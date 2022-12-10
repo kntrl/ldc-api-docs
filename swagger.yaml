@@ -1,11 +1,11 @@
 openapi: 3.0.0
 servers:
-  - url: https://7l1qiktwee.execute-api.eu-west-1.amazonaws.com/api
+  - url: https://odfdle23rd.execute-api.eu-west-1.amazonaws.com/api
     description: Production server
 info:
-  description: MTM Orders Api
+  description: '[ BASE PATH: https://odfdle23rd.execute-api.eu-west-1.amazonaws.com ]'
   version: "1.0.0"
-  title: LDC Api
+  title: LDC MTM Api
   contact:
     email: lorenzoscortichini@outlook.it
   license:
