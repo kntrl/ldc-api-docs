@@ -1,58 +1,45 @@
----
 openapi: 3.0.0
+servers:
+  - url: https://7l1qiktwee.execute-api.eu-west-1.amazonaws.com/api
+    description: Production server
 info:
-  title: LDC Api
   description: MTM Orders Api
+  version: "1.0.0"
+  title: LDC Api
   contact:
     email: lorenzoscortichini@outlook.it
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
-servers:
-- url: https://7l1qiktwee.execute-api.eu-west-1.amazonaws.com/api
-  description: Production server
-security:
-- ApiKeyAuth: []
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 tags:
-- name: mtm
-  description: MTM orders calls
+  - name: mtm
+    description: MTM orders calls
 paths:
   /mtm/orders:
     post:
       tags:
-      - mtm
+        - mtm
       summary: Creates a new order
-      description: Adds an new order to the system
       operationId: postOrder
-      requestBody:
-        description: Inventory item to add
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MtmOrder'
+      description: Adds an new order to the system
       responses:
         "201":
-          description: Order created successfully
+          description: "Order created successfully"
         "400":
           description: Invalid order, Request body didn\'t pass validation
         "403":
-          description: Invalid x-api-key, unauthorized call
+          description: "Invalid x-api-key, unauthorized call"
         "500":
-          description: Upload to LDC FTP failed. Retrying will not create a duplicate.
+          description: "Upload to LDC FTP failed. Retrying will not create a duplicate."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MtmOrder"
+        description: Inventory item to add
 components:
   schemas:
     MtmOrder:
-      required:
-      - customer
-      - handmade_quality
-      - id
-      - items
-      - measurement
-      - order
-      - qty
-      - status
-      - urgent
       type: object
       properties:
         id:
@@ -70,205 +57,207 @@ components:
         status:
           type: string
         customer:
-          $ref: '#/components/schemas/MtmOrder_customer'
+          type: object
+          properties:
+            firstname:
+              type: string
+            lastname:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+          required:
+            - firstname
+            - lastname
+            - email
+            - phone
         measurement:
-          $ref: '#/components/schemas/MtmOrder_measurement'
+          type: object
+          properties:
+            id:
+              type: integer
+            title:
+              type: string
+            enc:
+              type: number
+            poi:
+              type: number
+            cein:
+              type: number
+            bas:
+              type: number
+            dos:
+              type: number
+            md:
+              type: number
+            mg:
+              type: number
+            car:
+              type: number
+            lmc:
+              type: number
+            bmc:
+              type: number
+            emm:
+              type: number
+            atbr:
+              type: number
+            plip:
+              type: number
+            pdb:
+              type: number
+            pgb:
+              type: number
+            epa:
+              type: number
+            apoi:
+              type: number
+            aped:
+              type: number
+            apeg:
+              type: number
+            aencd:
+              type: number
+            aenca:
+              type: number
+            lhm:
+              type: number
+            bcps:
+              type: number
+            equ:
+              type: boolean
+          required:
+            - id
+            - title
+            - enc
+            - poi
+            - cein
+            - bas
+            - dos
+            - md
+            - mg
+            - car
+            - lmc
+            - bmc
+            - emm
+            - atbr
+            - plip
+            - pdb
+            - pgb
+            - epa
+            - apoi
+            - aped
+            - apeg
+            - aencd
+            - aenca
+            - lhm
+            - bcps
+            - equ
         items:
-          $ref: '#/components/schemas/MtmOrder_items'
-    MtmOrder_customer:
+          type: object
+          properties:
+            monogram:
+              type: object
+              properties:
+                value:
+                  type: string
+                position:
+                  type: string
+                style:
+                  type: string
+                color:
+                  type: string
+              required:
+                - value
+                - position
+                - style
+                - color
+            embroidery:
+              type: object
+              properties:
+                value:
+                  type: string
+                style:
+                  type: string
+                color:
+                  type: string
+              required:
+                - value
+                - style
+                - color
+            collar:
+              type: string
+            cuff:
+              type: string
+            front:
+              type: string
+            bottom:
+              type: string
+            back:
+              type: string
+            back_option:
+              type: string
+            pocket:
+              type: string
+            pocket_option:
+              type: string
+            epaulettes:
+              type: string
+            button:
+              type: string
+            buttonhole_color:
+              type: string
+            lining_position:
+              type: string
+            collar_stays:
+              type: string
+            collar_lining:
+              type: string
+            lining_fabric:
+              type: string
+            fabric:
+              type: string
+            ribs:
+              type: string
+            collar_is_white:
+              type: boolean
+            cuff_is_white:
+              type: boolean
+            button_studs:
+              type: string
+            button_bpm:
+              type: string
+          required:
+            - collar
+            - cuff
+            - front
+            - bottom
+            - back
+            - back_option
+            - pocket_option
+            - epaulettes
+            - button
+            - buttonhole_color
+            - lining_position
+            - collar_stays
+            - collar_lining
+            - fabric
+            - ribs
       required:
-      - email
-      - firstname
-      - lastname
-      - phone
-      type: object
-      properties:
-        firstname:
-          type: string
-        lastname:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-    MtmOrder_measurement:
-      required:
-      - aenca
-      - aencd
-      - aped
-      - apeg
-      - apoi
-      - atbr
-      - bas
-      - bcps
-      - bmc
-      - car
-      - cein
-      - dos
-      - emm
-      - enc
-      - epa
-      - equ
-      - id
-      - lhm
-      - lmc
-      - md
-      - mg
-      - pdb
-      - pgb
-      - plip
-      - poi
-      - title
-      type: object
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-        enc:
-          type: number
-        poi:
-          type: number
-        cein:
-          type: number
-        bas:
-          type: number
-        dos:
-          type: number
-        md:
-          type: number
-        mg:
-          type: number
-        car:
-          type: number
-        lmc:
-          type: number
-        bmc:
-          type: number
-        emm:
-          type: number
-        atbr:
-          type: number
-        plip:
-          type: number
-        pdb:
-          type: number
-        pgb:
-          type: number
-        epa:
-          type: number
-        apoi:
-          type: number
-        aped:
-          type: number
-        apeg:
-          type: number
-        aencd:
-          type: number
-        aenca:
-          type: number
-        lhm:
-          type: number
-        bcps:
-          type: number
-        equ:
-          type: boolean
-    MtmOrder_items_monogram:
-      required:
-      - color
-      - position
-      - style
-      - value
-      type: object
-      properties:
-        value:
-          type: string
-        position:
-          type: string
-        style:
-          type: string
-        color:
-          type: string
-    MtmOrder_items_embroidery:
-      required:
-      - color
-      - style
-      - value
-      type: object
-      properties:
-        value:
-          type: string
-        style:
-          type: string
-        color:
-          type: string
-    MtmOrder_items:
-      required:
-      - back
-      - back_option
-      - bottom
-      - button
-      - buttonhole_color
-      - collar
-      - collar_lining
-      - collar_stays
-      - cuff
-      - epaulettes
-      - fabric
-      - front
-      - lining_position
-      - pocket_option
-      - ribs
-      type: object
-      properties:
-        monogram:
-          $ref: '#/components/schemas/MtmOrder_items_monogram'
-        embroidery:
-          $ref: '#/components/schemas/MtmOrder_items_embroidery'
-        collar:
-          type: string
-        cuff:
-          type: string
-        front:
-          type: string
-        bottom:
-          type: string
-        back:
-          type: string
-        back_option:
-          type: string
-        pocket:
-          type: string
-        pocket_option:
-          type: string
-        epaulettes:
-          type: string
-        button:
-          type: string
-        buttonhole_color:
-          type: string
-        lining_position:
-          type: string
-        collar_stays:
-          type: string
-        collar_lining:
-          type: string
-        lining_fabric:
-          type: string
-        fabric:
-          type: string
-        ribs:
-          type: string
-        collar_is_white:
-          type: boolean
-        cuff_is_white:
-          type: boolean
-        button_studs:
-          type: string
-        button_bpm:
-          type: string
+        - id
+        - order
+        - qty
+        - handmade_quality
+        - urgent
+        - status
+        - customer
+        - measurement
+        - items
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
-      name: x-api-key
       in: header
+      name: x-api-key
+security:
+  - ApiKeyAuth: []
